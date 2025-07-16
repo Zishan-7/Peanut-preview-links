@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This app is made using Nextjs, Typescript and Tailwind CSS
 
-## Getting Started
+# Architechture
 
-First, run the development server:
+The app has 3 main components
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- The UI: The page where user will land after clicking the link, this also contains the metadata for link previews
+- The API - This api route helps gather the dynamic data that needs to be shown on link preview
+- The link preview Image - This component consumes the data that is fetched in the API route and generates the dynamic link preview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+When the link is shared on any social media app/messenger, The metadata for the page is gathered. For our app that metadata is built dynamically (name, amount).
+This is how the flow looks for generating metadata -
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- The /claim page gets the claim id passed in the URL and fetches the details related to the claim id. In our case I have mocked this data fetching. After the data is fetched a request is made to the api route - `/api/preview?amount=${claimDetails?.amount}&name=${claimDetails?.name}&previewType=claim`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- The API route handles the image generation. I have created a `PreviewImage.tsx` component that handles the image generation and adding the data that we got from the FE. After image is generated it is returned back to the FE.
+- The FE then sends back the image with the metadata
 
-## Learn More
+# Explanation
 
-To learn more about Next.js, take a look at the following resources:
+The problem was to generate dynamic link previews, so for that to happen the main challenge was to make the link preview image dynamic. First I thought of using a SVG so that I can dynamically change the user name and amount on the fly but SVGs does not work with link previews. To solve this I did some gooogling and some ChatGPT-ingg. And reached a approach where now I am rendering a react component whenever a link is requested, This react component contains a background image(png) and on top of that it has the dynamic name and amount.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Unresolved issues
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Font isnt working
+- The preview links only have the bg, name and amount. The other SVGs are missing.
 
-## Deploy on Vercel
+# Challenges I ran into
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Making the fonts work in the preview image - I tried importing the font and using it via css classes and inline styling but it did not work. After researching on web and finding some good resources I think it may work by reading the font as a file using fs (in the /api route) and then passing it on to the image preview. I think its not working as fonts work in a regular page because in link previews we are not rending the whole app and assests. The link preview component is like a isolated components that does not have access to all the dependecies in the app (Tailwind also does not work) So we need to provide everything explicitly.
+- Testing - testing link previews was also a big challenge. I solved this via ngrok to expose my port on the internet and test it on whatsapp/tg.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## You can use these Claim IDs for testing
+
+- 1123
+- 2456
+- 3789
+- 4012
+- 5345
