@@ -1,3 +1,4 @@
+import { claimIds } from "@/utils/mockData";
 import { Metadata } from "next";
 
 interface Props {
@@ -10,14 +11,19 @@ export async function generateMetadata({
 }: Props): Promise<Metadata> {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-  const linkDetails = {
-    name: "John Doe",
-    amount: 100,
-  };
+  const id = (await searchParams).id;
 
-  const title = `${linkDetails.name} is sending you $${linkDetails.amount}`;
+  const claimDetails = claimIds.find((claim) => claim.id === id);
 
-  const previewUrl = `${BASE_URL}/api/preview?amount=${linkDetails.amount}&name=${linkDetails.name}&previewType=claim`;
+  if (!claimDetails) {
+    return {
+      title: "Claim not found",
+    };
+  }
+
+  const title = `${claimDetails?.name} is sending you $${claimDetails?.amount}`;
+
+  const previewUrl = `${BASE_URL}/api/preview?amount=${claimDetails?.amount}&name=${claimDetails?.name}&previewType=claim`;
 
   return {
     title: title,
