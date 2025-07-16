@@ -30,10 +30,12 @@ The problem was to generate dynamic link previews, so for that to happen the mai
 - Making the fonts work in the preview image - I tried importing the font and using it via css classes and inline styling but it did not work. After researching on web and finding some good resources I think it may work by reading the font as a file using fs (in the /api route) and then passing it on to the image preview. I think its not working as fonts work in a regular page because in link previews we are not rending the whole app and assests. The link preview component is like a isolated components that does not have access to all the dependecies in the app (Tailwind also does not work) So we need to provide everything explicitly.
 - Testing - testing link previews was also a big challenge. I solved this via ngrok to expose my port on the internet and test it on whatsapp/tg.
 
-## You can use these Claim IDs for testing
+## You can use these Claim IDs for testing Claim page (https://peanut-preview-links.vercel.app/claim?id={claimid})
 
 - 1123
 - 2456
 - 3789
 - 4012
 - 5345
+
+## For Testing request page - https://peanut-preview-links.vercel.app/request/{name}/{amount} You can use any name and amount here
