@@ -7,13 +7,22 @@ export function PreviewImage({
   name,
   amount,
   previewType,
+  iconSrc,
+  logoSrc,
+  arrowSrcs,
 }: {
   name: string;
   amount: string;
   previewType: PreviewType;
+  iconSrc: string;
+  logoSrc: string;
+  arrowSrcs: {
+    topLeft: string;
+    topRight: string;
+    bottomLeft: string;
+    bottomRight: string;
+  };
 }) {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
   const title =
     previewType === PreviewType.CLAIM ? "is sending you" : "is requesting ";
 
@@ -28,21 +37,23 @@ export function PreviewImage({
         justifyContent: "center",
         overflow: "hidden",
         position: "relative",
+        backgroundColor: "#fe91e6",
+        gap: 16,
       }}
     >
-      <img
-        src={`${BASE_URL}/previewBg.png`}
-        alt="Background"
+      <div
         style={{
           position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
+          top: 24,
+          left: 34,
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
         }}
-      />
-
+      >
+        <img src={iconSrc} width={35} height={45} alt="Peanut icon" />
+        <img src={logoSrc} width={130} height={25} alt="Peanut logo" />
+      </div>
       <div
         style={{
           display: "flex",
@@ -52,41 +63,104 @@ export function PreviewImage({
           height: "100%",
         }}
       >
-        <label
+        <h2
           style={{
-            fontSize: "40px",
-            fontWeight: "bolder",
             color: "black",
-            gap: "0px",
-            fontFamily: "Knerd, sans-serif",
+            fontFamily: "MontserratSemiBold, sans-serif",
+            fontWeight: 700,
+            fontSize: 80,
+            margin: 0,
+            letterSpacing: "-0.05em",
           }}
         >
           {name}
-        </label>
-        <label style={{ fontSize: "16px", fontWeight: "bold", color: "black" }}>
+        </h2>
+        <label
+          style={{
+            color: "black",
+            fontFamily: "Montserrat, sans-serif",
+            fontWeight: 500,
+            fontSize: 46,
+            marginBottom: 30,
+          }}
+        >
           {title}
         </label>
 
-        <div
+        <p
           style={{
-            display: "flex",
-            gap: "16px",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: "1px",
+            position: "relative",
+            display: "block",
+            fontSize: 200,
+            lineHeight: 1,
+            margin: 0,
+            marginTop: 30,
           }}
         >
-          <label
+          <img
+            src={arrowSrcs.topLeft}
+            width={100}
+            height={100}
+            alt=""
             style={{
-              fontSize: "30px",
-              fontWeight: "bold",
-              color: "black",
-              fontFamily: "Knerd, sans-serif",
+              position: "absolute",
+              top: -110,
+              left: -60,
+              pointerEvents: "none",
+            }}
+          />
+
+          <img
+            src={arrowSrcs.topRight}
+            width={130}
+            height={80}
+            alt=""
+            style={{
+              position: "absolute",
+              top: -90,
+              right: -100,
+              pointerEvents: "none",
+              transform: "rotate(5deg)",
+            }}
+          />
+
+          <span
+            style={{
+              fontFamily: "KnerdOutline, sans-serif",
+              color: "#black",
+              letterSpacing: "-0.08em",
             }}
           >
-            $ {amount}
-          </label>
-        </div>
+            ${amount}
+          </span>
+
+          <img
+            src={arrowSrcs.bottomLeft}
+            width={64}
+            height={96}
+            alt=""
+            style={{
+              position: "absolute",
+              bottom: 10,
+              left: -20,
+              pointerEvents: "none",
+            }}
+          />
+
+          <img
+            src={arrowSrcs.bottomRight}
+            width={40}
+            height={60}
+            alt=""
+            style={{
+              position: "absolute",
+              bottom: 10,
+              right: -20,
+              pointerEvents: "none",
+              transform: "rotate(-15deg)",
+            }}
+          />
+        </p>
       </div>
     </div>
   );
